@@ -36,11 +36,11 @@ end
 
 
 %import data
-Data = load("Brno_Data100%.txt");
+Data = load("YourDatset.txt");  %Include your Dataset here. format in text file with columns [charging voltage, discharging voltage, Re(Ohm), Im(Ohm)]
 Data = Data./max(Data);
 [entries, attributes] = size(Data);
 entries_breakpoint = round(entries*.70); %this is cutting out % of entries
-Data_inputs = Data(:,[2,4,5,6]); %discharging voltage, Re(Ohm), Im(Ohm)
+Data_inputs = Data(:,[1,2,3,4]); %charging voltage, discharging voltage, Re(Ohm), Im(Ohm)
 Data_output = Data(:, 7); %Capacitence 
 
 
@@ -263,7 +263,7 @@ xlabel("sample")
 NARX = cell2mat(predTrainData_outputs((entries_breakpoint-2):end))';
 errNARX = error(entries_breakpoint:end)';
 
-mdl = fitlm((Data((entries_breakpoint:end),[2,4,5,6])),cell2mat(predTrainData_outputs((entries_breakpoint-2:end)))');
+mdl = fitlm((Data((entries_breakpoint:end),[1,2,3,4])),cell2mat(predTrainData_outputs((entries_breakpoint-2:end)))');
 disp(mdl)
 
 disp(['Standard deviation or error: ', num2str(std(errNARX))])
@@ -280,3 +280,4 @@ disp(['Standard deviation or error: ', num2str(std(errNARX))])
 % ylabel('SOC')
 % xlabel('Sample')
 % title('Change in LSTM Output for Different Hidden Layer Sizes')
+
