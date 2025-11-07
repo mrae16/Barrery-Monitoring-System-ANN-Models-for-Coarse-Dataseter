@@ -15,14 +15,14 @@ iterations_if_looping = 10000;   % this is to allow the smaller learning rates t
 
 
 % Load and preprocess your numerical data
-Data = load("Brno_Data100%.txt");
+Data = load("YourDatset.txt");  %Include your Dataset here. format in text file with columns [charging voltage, discharging voltage, Re(Ohm), Im(Ohm)]
 Data = Data./max(Data);
 [entries, attributes] = size(Data);
 entries_breakpoint = round(entries*.70); %this is cutting out % of entries
-trainData_inputs1 = Data(1:entries_breakpoint,[2,4,5,6]); %discharging voltage, Re(Ohm), Im(Ohm)
-trainData_output = Data(1:entries_breakpoint, 7); %Capacitence 
-testData_inputs = Data(entries_breakpoint:end, [2,4,5,6]);
-testData_output = Data(entries_breakpoint:end, 7);
+trainData_inputs1 = Data(1:entries_breakpoint,[1,2,3,4]); %discharging voltage, Re(Ohm), Im(Ohm)
+trainData_output = Data(1:entries_breakpoint, 5); %Capacitence 
+testData_inputs = Data(entries_breakpoint:end, [1,2,3,4]);
+testData_output = Data(entries_breakpoint:end, 5);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 disp(loop)
@@ -66,7 +66,7 @@ switch loop
 % Define training options
 options = trainingOptions('adam', ...
     'MaxEpochs', 900, ...
-    'MiniBatchSize', length(trainData_inputs1), ... %after each iteration, the all 35 predicted outputs are compared with the 35 epxerimental outputs
+    'MiniBatchSize', length(train_inputs1), ... %after each iteration, the all 35 predicted outputs are compared with the 35 epxerimental outputs
     'InitialLearnRate', lr_opt, ...
     'LearnRateSchedule','none', ...
     'Shuffle', 'never', ...
@@ -77,7 +77,7 @@ options = trainingOptions('adam', ...
 
 % Train the network
 
-net = trainNetwork(trainData_inputs1, trainData_output, layers, options);
+net = trainNetwork(train_inputs1, trainData_output, layers, options);
 
 PredTestData_output = predict(net, testData_inputs);
 
@@ -143,3 +143,4 @@ disp(['MAE: ', num2str(MAE)])
 
 mdl = fitlm(testData_inputs, PredTestData_output);
 disp(mdl)
+
