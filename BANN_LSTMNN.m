@@ -13,14 +13,14 @@ iterations_if_looping = 10000;   % this is to allow the smaller learning rates t
 
 
 % Load and preprocess your numerical data
-Data = load("Brno_Data100%.txt");
+Data = load("YourDatset.txt");  %Include your Dataset here. format in text file with columns [charging voltage, discharging voltage, Re(Ohm), Im(Ohm)]
 Data = Data./max(Data);
 [entries, attributes] = size(Data);
 entries_breakpoint = round(entries*.70); %this is cutting out 50% of entries
-trainData_inputs = Data(1:entries_breakpoint,[2,4,5,6]); %discharging voltage, Re(Ohm), Im(Ohm)
-trainData_output = Data(1:entries_breakpoint, 7); %Capacitence 
-testData_inputs = Data(entries_breakpoint:end, [2,4,5,6]);
-testData_output = Data(entries_breakpoint:end, 7);
+trainData_inputs = Data(1:entries_breakpoint,[1,2,3,4]); %discharging voltage, Re(Ohm), Im(Ohm)
+trainData_output = Data(1:entries_breakpoint, 5); %Capacitence 
+testData_inputs = Data(entries_breakpoint:end, [1,2,3,4]);
+testData_output = Data(entries_breakpoint:end, 5);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -147,3 +147,4 @@ switch loop
 
 mdl = fitlm(testData_inputs, PredTestData_output);
 disp(mdl)
+
